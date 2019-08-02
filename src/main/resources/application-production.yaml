@@ -1,0 +1,16 @@
+#profile= production
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gateway
+    username: postgres
+    password: postgres
+  ## PostgreSQL
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults : false

@@ -1,4 +1,4 @@
-package com.ard333.springbootwebfluxjjwt.rest;
+package com.ard333.springbootwebfluxjjwt.controller;
 
 import com.ard333.springbootwebfluxjjwt.model.Message;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,10 @@ import reactor.core.publisher.Mono;
  *
  * @author ardiansyah
  */
+//FIXME: This should be removed and added to WebSecurityConfig as endpoint hasRole() properties
 @RestController
-public class ResourceREST {
+@Deprecated
+public class ResourceController {
 	
 	@RequestMapping(value = "/resource/user", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('USER')")

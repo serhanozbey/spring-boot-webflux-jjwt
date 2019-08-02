@@ -1,0 +1,16 @@
+#profile= development
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+logging.level:
+  org.serhan.demo : DEBUG
+  org.springframework.web:  TRACE
+
+
+spring.h2.console.enabled: true

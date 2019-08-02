@@ -1,4 +1,4 @@
-package com.ard333.springbootwebfluxjjwt.rest;
+package com.ard333.springbootwebfluxjjwt.controller;
 
 import com.ard333.springbootwebfluxjjwt.security.JWTUtil;
 import com.ard333.springbootwebfluxjjwt.security.PBKDF2Encoder;
@@ -8,18 +8,18 @@ import com.ard333.springbootwebfluxjjwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import javax.validation.Valid;
+import javax.validation.Validator;
 
 /**
  *
  * @author ard333
  */
 @RestController
-public class AuthenticationREST {
+public class AuthenticationController {
 
 	@Autowired
 	private JWTUtil jwtUtil;
@@ -28,11 +28,11 @@ public class AuthenticationREST {
 	private PBKDF2Encoder passwordEncoder;
 
 	@Autowired
-	private UserService userRepository;
+	private UserService userService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Mono<ResponseEntity<?>> login(@RequestBody AuthRequest ar) {
-		return userRepository.findByUsername(ar.getUsername()).map((userDetails) -> {
+	@PostMapping("/login")
+	public Mono<ResponseEntity<?>> login(@RequestBody @Valid AuthRequest ar) {
+		return userService.findByEmail(ar.getEmail()).map((userDetails) -> {
 			if (passwordEncoder.encode(ar.getPassword()).equals(userDetails.getPassword())) {
 				return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails)));
 			} else {
@@ -40,5 +40,5 @@ public class AuthenticationREST {
 			}
 		}).defaultIfEmpty(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
-
+	
 }

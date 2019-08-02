@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  *
  * @author ard333
@@ -12,7 +15,9 @@ import lombok.ToString;
 @Data @NoArgsConstructor @AllArgsConstructor @ToString
 public class  AuthRequest {
 	
-	private String username;
+	@NotEmpty
+	@NotNull
+	private String email;
 	
 	private String password;
 

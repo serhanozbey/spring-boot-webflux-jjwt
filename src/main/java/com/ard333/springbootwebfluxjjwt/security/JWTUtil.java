@@ -2,15 +2,24 @@ package com.ard333.springbootwebfluxjjwt.security;
 
 import com.ard333.springbootwebfluxjjwt.model.User;
 import java.io.Serializable;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.Security;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.ard333.springbootwebfluxjjwt.model.UserPrincipal;
+import com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations.PrivateKeyResolver;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -44,10 +53,10 @@ public class JWTUtil implements Serializable {
 		return expiration.before(new Date());
 	}
 	
-	public String generateToken(User user) {
+	public String generateToken(UserPrincipal userPrincipal) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", user.getRoles());
-		return doGenerateToken(claims, user.getUsername());
+		claims.put("role", userPrincipal.getAuthorities());
+		return doGenerateToken(claims, userPrincipal.getUsername());
 	}
 
 	private String doGenerateToken(Map<String, Object> claims, String username) {
@@ -60,7 +69,7 @@ public class JWTUtil implements Serializable {
 				.setSubject(username)
 				.setIssuedAt(createdDate)
 				.setExpiration(expirationDate)
-				.signWith(SignatureAlgorithm.HS512, Base64.getEncoder().encodeToString(secret.getBytes()))
+				.signWith(Keys.hmacShaKeyFor(secret.getBytes()),SignatureAlgorithm.HS512)
 				.compact();
 	}
 	
