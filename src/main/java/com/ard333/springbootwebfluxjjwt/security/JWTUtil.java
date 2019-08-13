@@ -1,17 +1,6 @@
 package com.ard333.springbootwebfluxjjwt.security;
 
-import com.ard333.springbootwebfluxjjwt.model.User;
-import java.io.Serializable;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.Security;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.ard333.springbootwebfluxjjwt.model.UserPrincipal;
-import com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations.PrivateKeyResolver;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +8,11 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
+import java.io.Serializable;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

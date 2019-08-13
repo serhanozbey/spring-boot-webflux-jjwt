@@ -4,15 +4,20 @@ import com.ard333.springbootwebfluxjjwt.security.JWTUtil;
 import com.ard333.springbootwebfluxjjwt.security.PBKDF2Encoder;
 import com.ard333.springbootwebfluxjjwt.security.model.AuthRequest;
 import com.ard333.springbootwebfluxjjwt.security.model.AuthResponse;
+import com.ard333.springbootwebfluxjjwt.security.model.SignUpRequest;
 import com.ard333.springbootwebfluxjjwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
+import java.net.URI;
 
 /**
  *
@@ -41,4 +46,17 @@ public class AuthenticationController {
 		}).defaultIfEmpty(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
+	@PostMapping("/signup")
+	@Transactional
+	public Mono<ResponseEntity<?>> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+		return userService.registerUser(signUpRequest)
+				.map((newUser) -> {
+					URI location = UriComponentsBuilder
+							.fromUriString("/user/me")
+							.buildAndExpand(newUser.getId()).toUri();
+					return ResponseEntity.created(location)
+							.body(newUser);
+				});
+		
+	}
 }

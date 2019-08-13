@@ -1,14 +1,12 @@
 package com.ard333.springbootwebfluxjjwt.model;
 
+import com.ard333.springbootwebfluxjjwt.security.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
 	private static final long serialVersionUID = 6564905217054043887L;
@@ -30,36 +28,17 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 	
 	/*normal user*/
 	public static UserPrincipal create(AppUser appUser) {
-		List<GrantedAuthority> authorities = Collections.
-				singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+		GrantedAuthority authority = appUser.getRole().equals(Role.ROLE_USER) ? new SimpleGrantedAuthority("ROLE_USER") : new SimpleGrantedAuthority("ROLE_ADMIN");
+		List<GrantedAuthority> list = Collections.singletonList(authority);
 		
 		return new UserPrincipal(
 				appUser.getId(),
 				appUser.getEmail(),
 				appUser.getPassword(),
-				authorities
+				list
 		);
 	}
 	
-	/*normal user*/
-	public static UserPrincipal createAdmin(AppUser appUser) {
-		List<GrantedAuthority> authorities = Collections.
-				singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		
-		return new UserPrincipal(
-				appUser.getId(),
-				appUser.getEmail(),
-				appUser.getPassword(),
-				authorities
-		);
-	}
-	
-	/*Oauth2 user*//*
-	public static UserPrincipal create(AppUser appUser, Map<String, Object> attributes) {
-		UserPrincipal userPrincipal = UserPrincipal.create(appUser);
-		userPrincipal.setAttributes(attributes);
-		return userPrincipal;
-	}*/
 	
 	public Long getId() {
 		return id;

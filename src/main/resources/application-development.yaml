@@ -2,15 +2,20 @@
 
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/webflux-gateway
+    username: postgres
+    password: postgres
+  ## PostgreSQL
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
-logging.level:
-  org.serhan.demo : DEBUG
-  org.springframework.web:  TRACE
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults : false
 
-
-spring.h2.console.enabled: true
+logging:
+  level:
+    com.ard333.springbootwebfluxjjwt: debug
+    org.springframework.*: debug

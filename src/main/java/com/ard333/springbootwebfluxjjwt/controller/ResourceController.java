@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ardiansyah
  */
-//FIXME: This should be removed and added to WebSecurityConfig as endpoint hasRole() properties
+//FIXME: This should be removed and added to WebSecurityConfig as endpoint hasRole() properties. A filter should be implemented to restrict operations (or endpoints that demand admin access).
 @RestController
 @Deprecated
 public class ResourceController {

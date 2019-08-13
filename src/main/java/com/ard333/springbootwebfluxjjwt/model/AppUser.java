@@ -1,6 +1,7 @@
 package com.ard333.springbootwebfluxjjwt.model;
 
 
+import com.ard333.springbootwebfluxjjwt.security.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,12 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class AppUser {
 	
-	public AppUser(String username, @Email @NotEmpty String email, AppUserDetail appUserDetail) {
+	public AppUser(String username, @Email @NotEmpty String email, AppUserDetail appUserDetail, Role role, AuthProvider authProvider) {
 		this.username = username;
 		this.email = email;
 		this.appUserDetail = appUserDetail;
+		this.role = role;
+		this.authProvider = authProvider;
 	}
 	
 	//mandatory fields, also in constructor
@@ -45,7 +48,7 @@ public class AppUser {
 	private String password;
 	private AuthProvider authProvider;
 	private String providerId;
-	private boolean isAdmin;
+	private Role role;
 	
 	
 	@PrePersist

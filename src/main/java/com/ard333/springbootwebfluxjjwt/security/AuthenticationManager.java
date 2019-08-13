@@ -9,17 +9,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author ard333
  */
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-
+	
 	@Autowired
 	private JWTUtil jwtUtil;
 	
@@ -36,15 +37,14 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 		}
 		if (username != null && jwtUtil.validateToken(authToken)) {
 			Claims claims = jwtUtil.getAllClaimsFromToken(authToken);
-			List<String> rolesMap = claims.get("role", List.class);
+			List rolesMap = claims.get("role", List.class);
 			List<Role> roles = new ArrayList<>();
-			for (String rolemap : rolesMap) {
-				roles.add(Role.valueOf(rolemap));
-			}
+			Map<String,String> role = (Map<String, String>) rolesMap.get(0);
+			roles.add(Role.valueOf(role.get("authority")));
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-				username,
-				null,
-				roles.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList())
+					username,
+					null,
+					roles.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList())
 			);
 			return Mono.just(auth);
 		} else {
