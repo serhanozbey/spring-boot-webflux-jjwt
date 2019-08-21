@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @RestController
 public class UserController {
 
@@ -26,9 +28,10 @@ public class UserController {
     public Mono<AppUserDetail> getCurrentUser(ServerWebExchange exchange) {
         return securityContextRepository.load(exchange).map(securityContext -> {
             Authentication authentication = securityContext.getAuthentication();
-            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-            return userDetailRepository.findByAppUserId(userPrincipal.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+            Map map = (Map) authentication.getPrincipal();
+            Long userId  = (Long) map.get("userId");
+            return userDetailRepository.findByAppUserId(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         });
         
     }

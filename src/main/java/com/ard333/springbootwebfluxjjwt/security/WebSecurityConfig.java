@@ -39,6 +39,7 @@ public class WebSecurityConfig {
 					});
 				}).and()
 				.csrf().disable()
+				.cors().disable()
 				.formLogin().disable()
 				.httpBasic().disable()
 				.authenticationManager(authenticationManager)
