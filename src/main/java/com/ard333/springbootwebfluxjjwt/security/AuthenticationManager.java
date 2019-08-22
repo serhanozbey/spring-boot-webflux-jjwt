@@ -35,6 +35,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 		try {
 			email = jwtUtil.getUsernameFromToken(authToken);
 		} catch (Exception e) {
+			//TODO: An authentication exception which can be handled by the authenticationEntryPoint (WebSecurityConfig.java) should be thrown here.
 			email = null;
 		}
 		if (email != null && jwtUtil.validateToken(authToken)) {

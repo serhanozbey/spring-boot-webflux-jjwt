@@ -26,7 +26,7 @@ public class WebSecurityConfig {
 	private SecurityContextRepository securityContextRepository;
 
 	@Bean
-	public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
+	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		return http
 				.exceptionHandling()
 				.authenticationEntryPoint((swe, e) -> {
@@ -39,7 +39,6 @@ public class WebSecurityConfig {
 					});
 				}).and()
 				.csrf().disable()
-				.cors().disable()
 				.formLogin().disable()
 				.httpBasic().disable()
 				.authenticationManager(authenticationManager)
