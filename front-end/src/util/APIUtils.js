@@ -23,9 +23,9 @@ const request = (options) => {
 				return json;
 			})
 		).catch(error => {
+			localStorage.removeItem(ACCESS_TOKEN);
 			//FIXME: Duplicated notifications problem. Interceptors should be implemented instead of these.
 			if (error.status === 401) {
-				localStorage.removeItem(ACCESS_TOKEN);
 				// toast((error.message) + '. Please login to continue.');
 				//TODO: A redirect should happen here.
 			} else if (error.status === 500) {
