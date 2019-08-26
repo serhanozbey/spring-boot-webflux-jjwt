@@ -1,5 +1,6 @@
 package com.ard333.springbootwebfluxjjwt.controller;
 
+import com.ard333.springbootwebfluxjjwt.exception.ResourceNotFoundException;
 import com.ard333.springbootwebfluxjjwt.model.AppUserDetail;
 import com.ard333.springbootwebfluxjjwt.model.UserPrincipal;
 import com.ard333.springbootwebfluxjjwt.repository.UserDetailRepository;
