@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -52,20 +54,15 @@ public class AppUserDetail {
 	
 	private Boolean emailVerified = false;
 	
+	@CreationTimestamp
+	private Date created;
+	
+	@UpdateTimestamp
+	private Date modified;
+	
 	@JsonProperty("app_user_id")
 	public Long getUserId() {
 		return this.appUser.getId();
 	}
 	
-	@PrePersist
-	public void prePersist() {
-		final Date date = new Date();
-		createdAt = date;
-		lastUpdate = date;
-	}
-	
-	@PreUpdate
-	public void preUpdate() {
-		lastUpdate = new Date();
-	}
 }
